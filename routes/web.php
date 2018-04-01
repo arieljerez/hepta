@@ -20,9 +20,9 @@ Route::get('/', function () {
 
 Route::get('nuevoturno', function () {
 
-  if (session('documento') == ""){
-    return redirect()->route('login');
-  }
+  //if (session('documento') == ""){
+  //  return redirect()->route('login');
+  //}
     $documento = session('documento');
     $clave = session('clave');;
 
@@ -106,3 +106,18 @@ Route::get('registrarse', function () {
 Route::get('mis-datos', function () {
     return view('mis_datos');
 })->name('mis-datos');
+
+Route::get('turnos', function () {
+    $uri_base= "http://appturnos.markey.com.ar/hepta/";
+    $url = "Pacientes.svc/ObtenerTurnosPaciente";
+
+    $http = new Client($uri_base);
+
+    $response = $http->request('GET',$url, [
+      'query' => [
+            'CodigoPaciente' => 188780,
+        ],
+    ]);
+
+    return view('turnos');
+})->name('turnos');

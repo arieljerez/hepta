@@ -46,7 +46,7 @@
 
   <body>
 
-<div id="app" class="container flex-center">
+<div id="app" class="container flex-center"  >
 
 <form id="loginForm" method="get" v-on:submit="login" action="{{ route('inicio')}}">
     <div class="row">
@@ -85,6 +85,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+<script src="https://unpkg.com/vue-cookies@1.5.5/vue-cookies.js"></script>
 
 <script type="text/javascript">
 var ws = "http://appturnos.markey.com.ar/hepta/"
@@ -104,10 +105,14 @@ methods: {
      this.AuthToken = this.ajax_data.AutenticarPacienteResult.AuthToken;
 
      if (this.AuthToken != null ){
-      //console.log("login exitoso");
+      console.log("login exitoso");
+
+      this.$cookies.set("documento", this.documento);
+      this.$cookies.set("clave", this.clave);
+
       document.getElementById("loginForm").submit();
      }else{
-       //console.log("login fallido");
+       console.log("login fallido");
        event.preventDefault();
      }
    }, function(){

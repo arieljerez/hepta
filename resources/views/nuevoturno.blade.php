@@ -1,89 +1,47 @@
+@extends('app')
+@section('css')
+  <style>
+  .tableFixHead { overflow-y: auto; height: 240px; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 8px 16px; }
+  th { background:#eee; }
+  </style>
+@endsection
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Hepta - Centro Medico -  Portal de turnos</title>
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <!-- wizard -->
-    <link href="wizard/prettify.css" rel="stylesheet">
-    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
-
-    <style>
-    .tableFixHead { overflow-y: auto; height: 240px; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { padding: 8px 16px; }
-    th { background:#eee; }
-    </style>
-  </head>
-
-  <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <div class="navbar-header">
-             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-               <span class="sr-only">Toggle navigation</span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-             </button>
-             <a class="navbar-brand" href="#">Hepta</a>
-           </div>
-          </a>
-        </div>
-      </div>
-    </nav>
-<div class="container">
+@section('content')
 
 <div class="row" id="app">
-  <pre class="code">
-  CodigoEspecialidad  @{{ CodigoEspecialidad }}
-  CodigoCobertura  @{{ CodigoCobertura }}
-  CodigoPlan  @{{ CodigoPlan }}
-  CodigoProfesional  @{{ CodigoProfesional }}
-  CodigosEstudios @{{ CodigosEstudios }}
-  </pre>
-
+  <div class="col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1">
   <div id="rootwizard">
-    <!-- /nav -->
+    <!-- nav -->
+
     <div class="navbar">
   	  <div class="navbar-inner">
-  	    <div class="container">
+  	    <div class="container-fluid">
         	<ul>
-        	  <li><a href="#tab1" data-toggle="tab">Inicio</a></li>
-        		<li><a href="#tab2" data-toggle="tab">Cobertura</a></li>
-        		<li><a href="#tab3" data-toggle="tab">Opción</a></li>
-        		<li><a href="#tab4" data-toggle="tab">Especialidad</a></li>
-        		<li><a href="#tab5" data-toggle="tab">Médico</a></li>
-        		<li><a href="#tab6" data-toggle="tab">Estudio</a></li>
-        		<li><a href="#tab7" data-toggle="tab">Fecha</a></li>
-            <li><a href="#tab8" data-toggle="tab">Turno</a></li>
+        	  <li><a href="#tab1" data-toggle="tab"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> </a></li>
+        		<li><a href="#tab2" data-toggle="tab"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></a></li>
+        		<li><a href="#tab3" data-toggle="tab"><span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span></a></li>
+        		<li><a href="#tab4" data-toggle="tab"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></a></li>
+        		<li><a href="#tab5" data-toggle="tab"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a></li>
+        		<li><a href="#tab6" data-toggle="tab"><span class="glyphicon glyphicon-scale" aria-hidden="true"></span></a></li>
+        		<li><a href="#tab7" data-toggle="tab"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></a></li>
+            <li><a href="#tab8" data-toggle="tab"><span class="glyphicon glyphicon-ok" aria-hidden="true"></a></li>
         	</ul>
   	    </div>
   	  </div>
-  	</div>
-  	<div id="bar" class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
     </div>
+
     <!-- /nav -->
 
+  	<div id="bar" class="progress">
+      <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+    </div>
+
     <div class="tab-content">
+
       <!-- inicio -->
         <div class="tab-pane" id="tab1">
-
           <div class="panel panel-info">
             <div class="panel-heading">Asistente</div>
             <div class="panel-body">
@@ -93,47 +51,43 @@
                    Recuerde que la asignación de turnos finaliza con la visualización de un código generado por el sistema, el mismo podrá ser solicitado por la secretaria del sector correspondiente el día de la consulta.
                  </p>
             </div>
-    	   </div>
+          </div>
 
-        </div> <!-- /inicio -->
+        </div>
+      <!-- /inicio -->
 
 
+      <!-- coberturas -->
+      <div class="tab-pane" id="tab2">
 
-        <div class="tab-pane" id="tab2">
-        <!-- coberturas -->
           <div class="panel panel-info">
             <div class="panel-heading">Coberturas</div>
             <div class="panel-body">
               Seleccione una Cobertura para solicitar el turno:<br />
 
-           <table class="table table-hover _tm">
+               <table class="table table-hover">
                 <thead>
                   <th>&nbsp;</th>
-                  <th>Contratacion</th>
                   <th>Cobertura</th>
-                  <th>Plan</th>
                   <th>Afiliado</th>
                 </thead>
                 <tbody>
                     <tr v-for="cobertura in coberturas" class="item_check3">
                       <td><input type="radio" id="cobertura" name="cobertura" v-bind:value="CodigoCoberturaPlanValue(cobertura.CodigoCobertura,cobertura.CodigoPlan)" v-model="CodigoCoberturaPlan"></td>
-                      <td>@{{ cobertura.Contratacion }}</td>
                       <td>@{{ cobertura.Cobertura }}</td>
-                      <td>@{{ cobertura.Plan }}</td>
                       <td>@{{ cobertura.Afiliado }}</td>
                     </tr>
                 </tbody>
-           </table>
-
-
+               </table>
 
             </div>
           </div>
-          <!-- /coberturas -->
+
         </div>
+        <!-- /coberturas -->
 
-        <div class="tab-pane" id="tab3">
-
+      <!-- Opciones -->
+       <div class="tab-pane" id="tab3">
           <div class="panel panel-info">
             <div class="panel-heading">Opción de busqueda</div>
             <div class="panel-body">
@@ -148,89 +102,81 @@
                           </tr>
                       </tbody>
                  </table>
-
             </div>
     	   </div>
-</div> <!-- /step 3-->
+       </div>
+       <!-- /Opciones -->
 
-<!-- step 4 -->
-<div class="tab-pane" id="tab4">
 <!-- Especialidad -->
-  <div class="panel panel-info">
-    <div class="panel-heading">Especialidades</div>
-    <div class="panel-body">
-<div class="tableFixHead">
+  <div class="tab-pane" id="tab4">
 
-
-   <table class="table table-hover">
-    <tbody>
-        <tr v-for="(especialidad, index) in especialidades">
-          <td>
-              <input type="radio" name="especialidades" id="especialidades" v-model="CodigoEspecialidad" :value="especialidad.CodigoEspecialidad">
-          </td>
-          <td>@{{ especialidad.Especialidad }}</td>
-        </tr>
-    </tbody>
-   </table>
-</div> <!-- tableFixHead -->
-
-
+    <div class="panel panel-info">
+      <div class="panel-heading">Especialidades</div>
+      <div class="panel-body">
+        <div class="tableFixHead">
+           <table class="table table-hover">
+            <tbody>
+                <tr v-for="(especialidad, index) in especialidades">
+                  <td>
+                      <input type="radio" name="especialidades" id="especialidades" v-model="CodigoEspecialidad" :value="especialidad.CodigoEspecialidad">
+                  </td>
+                  <td>@{{ especialidad.Especialidad }}</td>
+                </tr>
+            </tbody>
+           </table>
+        </div> <!-- tableFixHead -->
+      </div>
     </div>
-  </div>  <!-- /Especialidad -->
 
-</div> <!-- /step 4 -->
+  </div>
+<!-- /Especialidad -->
 
-<!-- step 5 -->
-<div class="tab-pane" id="tab5">
 <!-- Médico -->
+<div class="tab-pane" id="tab5">
   <div class="panel panel-info">
     <div class="panel-heading">Médico</div>
     <div class="panel-body">
+        <div class="tableFixHead">
+          <table class="table table-hover">
+               <tbody>
+                   <tr v-for="(medico, index) in medicos">
+                     <td>
+                         <input type="radio" name="medico" :value="medico.CodigoProfesional" v-model="CodigoProfesional" >
+                     </td>
+                     <td>@{{ medico.Profesional }}</td>
 
-<div class="tableFixHead">
-  <table class="table table-hover">
-
-       <tbody>
-           <tr v-for="(medico, index) in medicos" class="item_check2">
-             <td>
-                 <input type="radio" name="medico" :value="medico.CodigoProfesional" v-model="CodigoProfesional" >
-             </td>
-             <td>@{{ medico.Profesional }}</td>
-
-           </tr>
-       </tbody>
-  </table>
-</div>
-
+                   </tr>
+               </tbody>
+          </table>
+        </div>
     </div>
-  </div>  <!-- /medico -->
+  </div>
+</div>
+<!-- Médico -->
 
-</div> <!-- /step 5 -->
-
-<!-- step 6 -->
-<div class="tab-pane" id="tab6">
 <!-- Estudios -->
+<div class="tab-pane" id="tab6">
   <div class="panel panel-info">
     <div class="panel-heading">Estudios</div>
     <div class="panel-body">
-
-<div class="tableFixHead">
-     <table class="table table-hover">
-        <tbody>
-            <tr v-for="(estudio, index) in estudios" class="item_check2">
-              <td>
-                  <input type="checkbox" :id="estudio.CodigoEstudio" :value="estudio.CodigoEstudio" v-model="CodigosEstudios">
-              </td>
-              <td>@{{ estudio.Estudio }}</td>
-            </tr>
-        </tbody>
-     </table>
-</div>
+      <div class="tableFixHead">
+         <table class="table table-hover">
+            <tbody>
+                <tr v-for="(estudio, index) in estudios" class="item_check2">
+                  <td>
+                      <input type="checkbox" :id="estudio.CodigoEstudio" :value="estudio.CodigoEstudio" v-model="CodigosEstudios">
+                  </td>
+                  <td>@{{ estudio.Estudio }}</td>
+                </tr>
+            </tbody>
+         </table>
+      </div>
     </div>
-  </div>  <!-- /Estudios -->
+  </div>
+</div>
+<!-- /Estudios -->
 
-</div> <!-- /step 6 -->
-
+<!-- Fecha -->
 <div class="tab-pane" id="tab7">
   <div class="panel panel-info">
     <div class="panel-heading">Fecha</div>
@@ -238,43 +184,39 @@
       <p>
         Seleccione la fecha estimada.
       </p>
-   <label for="Fecha">Primer turno a partir del: </label>
-   <input type="date" name="Fecha" class="form-control" :value="hoy()" :min="hoy()" required>
-
+     <label for="Fecha">Primer turno a partir del: </label>
+     <input type="date" name="Fecha" class="form-control" :value="hoy()" :min="hoy()" required>
     </div>
-  </div>  <!-- /fecha -->
+  </div>
 </div>
+<!-- /Fecha -->
 
-<!-- step 8 -->
-<div class="tab-pane" id="tab8">
 <!-- Estudios -->
+<div class="tab-pane" id="tab8">
+
   <div class="panel panel-info">
-    <div class="panel-heading">Turnoa</div>
+    <div class="panel-heading">Turnos</div>
     <div class="panel-body">
-
-<div class="tableFixHead">
-     <table class="table table-hover">
-        <tbody>
-            <tr v-for="(turno, index) in turnos" class="item_check2">
-              <td>
-                  <input type="radio" id="CodigoTurno" name="CodigoTurno" :value="turno.CodigoTurno" v-model="CodigoTurno">
-              </td>
-              <td>@{{ turno.Fecha }}</td>
-              <td>@{{ turno.Profesional }}</td>
-              <td>@{{ turno.Especialidad }}</td>
-              <td>@{{ turno.Estudio }}</td>
-
-            </tr>
-        </tbody>
-     </table>
-</div>
-
+      <div class="tableFixHead">
+         <table class="table table-hover">
+            <tbody>
+                <tr v-for="(turno, index) in turnos" class="item_check2">
+                  <td>
+                      <input type="radio" id="CodigoTurno" name="CodigoTurno" :value="turno.CodigoTurno" v-model="CodigoTurno">
+                  </td>
+                  <td>@{{ turno.Fecha }} - @{{ turno.Profesional }} - @{{ turno.Especialidad }} - @{{ turno.Estudio }}</td>
+                </tr>
+            </tbody>
+         </table>
     </div>
-  </div>  <!-- /Estudios -->
-
-</div> <!-- /step 6 -->
+    </div>
+  </div>
 
 </div>
+<!-- /Estudios -->
+
+</div>
+<!-- /tab content -->
 
     <ul class="pager wizard">
       <li class="previous first" style="display:none;"><a href="#">First</a></li>
@@ -284,10 +226,20 @@
       <li class="finish btn-lg"><a href="javascript:;" data-toggle="modal" data-target="#myModal">Tomar Turno</a></li>
     </ul>
 
-  </div>
-
 </div>
-<!-- /modal -->
+<!-- /rootwizard -->
+<pre class="code">
+    CodigoEspecialidad  @{{ CodigoEspecialidad }}
+    CodigoCobertura  @{{ CodigoCobertura }}
+    CodigoPlan  @{{ CodigoPlan }}
+    CodigoProfesional  @{{ CodigoProfesional }}
+    CodigosEstudios @{{ CodigosEstudios }}
+</pre>
+</div>
+
+</div>  <!-- /row -->
+
+<!-- modal -->
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
 
@@ -310,28 +262,10 @@
       </div>
     </div>
 <!-- /modal -->
+@endsection
 
 
-</div> <!-- /container -->
-
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">2018 - Copyright </span>
-      </div>
-    </footer>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-    <script src="wizard/jquery.bootstrap.wizard.js"></script>
-  	<script src="wizard/prettify.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
-
-    <script src="https://unpkg.com/vue-cookies@1.5.5/vue-cookies.js"></script>
-
+@section('js')
     <script type="text/javascript">
     var ws = "http://appturnos.markey.com.ar/hepta/";
     var vm =  new Vue({
@@ -525,17 +459,8 @@
       $(this).children('td').children('input').prop('checked', true);
     });
 
-    $('.item_check3').click(function() {
-      console.log('item_check3');
-      //$(this).children('td').children('input').prop('checked', true);
-    });
-
     $('.tableFixHead').on('scroll', function() {
       $('thead', this).css('transform', 'translateY('+ this.scrollTop +'px)');
     });
-
-
-    </script>
-
-  </body>
-</html>
+</script>
+@endsection
