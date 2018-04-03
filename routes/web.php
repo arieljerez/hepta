@@ -13,10 +13,48 @@
 
 // Nuevo cliente con un url base
 use GuzzleHttp\Client;
-
+use Carbon\Carbon;
 Route::get('/', function () {
     return view('login');
 })->name('login');
+
+
+Route::post('login', function (){
+  $documento = request()->input('documento');
+  $clave = request()->input('clave');
+
+  $http = new Client([
+      // Base URI is used with relative requests
+      'base_uri' => 'http://appturnos.markey.com.ar',
+      // You can set any number of default request options.
+      'timeout'  => 2.0,
+  ]);
+
+  $url = "hepta/Pacientes.svc/autenticarpaciente";
+
+  $response = $http->request('GET',$url, [
+    'query' => [
+          'Usuario' => $documento,
+          'Clave' => $clave, // '5497032',
+      ],
+  ]);
+  $body = json_decode($response->getBody()->getContents());
+
+
+  if($body->AutenticarPacienteResult->AuthToken == ""){
+      return redirect('/');
+  }
+
+
+  $paciente = $body->AutenticarPacienteResult->Pacientes[0];
+  $CodigoPaciente = $paciente->CodigoPaciente;
+
+  session(['CodigoPaciente' => $CodigoPaciente]);
+
+  return redirect()->route('inicio');
+
+})->name('login');
+
 
 Route::get('nuevoturno', function () {
 
@@ -27,35 +65,11 @@ Route::get('nuevoturno', function () {
     $clave = session('clave');;
 
     return view('nuevoturno',compact(['documento','clave']));
-});
+})->name('nuevoturno');
 
 Route::get('inicio', function () {
-
-  $documento = request()->input('documento');
-  $clave = request()->input('clave');
-
-  session(['documento' => request()->input('documento')]);
-  session(['clave'=> request()->input('clave')]);
-
-  $http = new Client;
-  $uri_base= "http://appturnos.markey.com.ar/hepta/Pacientes.svc/";
-
-  $url = $uri_base."autenticarpaciente";
-
-  $response = $http->request('GET',$url, [
-    'query' => [
-          'Usuario' => $documento,
-          'Clave' => $clave, // '5497032',
-      ],
-  ]);
-
-  $array = (json_decode((string) $response->getBody(), true));
-
-  if($array['AutenticarPacienteResult']['AuthToken'] != ""){
-      $CodigoPaciente = $array['AutenticarPacienteResult']['Pacientes'][0]['CodigoPaciente'];
-      return view('inicio',compact('CodigoPaciente'));
-  }
-  return redirect(route('login'));
+  $CodigoPaciente = session('CodigoPaciente');
+  return view('inicio',compact('CodigoPaciente'));
 
 })->name('inicio');
 
@@ -107,17 +121,4 @@ Route::get('mis-datos', function () {
     return view('mis_datos');
 })->name('mis-datos');
 
-Route::get('turnos', function () {
-    $uri_base= "http://appturnos.markey.com.ar/hepta/";
-    $url = "Pacientes.svc/ObtenerTurnosPaciente";
-
-    $http = new Client($uri_base);
-
-    $response = $http->request('GET',$url, [
-      'query' => [
-            'CodigoPaciente' => 188780,
-        ],
-    ]);
-
-    return view('turnos');
-})->name('turnos');
+Route::get('turnos','TurnoController@all')->name('turnos');

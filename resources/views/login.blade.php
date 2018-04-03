@@ -48,7 +48,7 @@
 
 <div id="app" class="container flex-center"  >
 
-<form id="loginForm" method="get" v-on:submit="login" action="{{ route('inicio')}}">
+<form id="loginForm" method="post" action="{{ route('login')}}">
     <div class="row">
       <div class="col-4">
         <a href="#" class="thumbnail well-lg" style="background-color: #D8E2EB">
@@ -86,41 +86,3 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
 <script src="https://unpkg.com/vue-cookies@1.5.5/vue-cookies.js"></script>
-
-<script type="text/javascript">
-var ws = "http://appturnos.markey.com.ar/hepta/"
-var vm =  new Vue({
-  el: "#app",
-  data: {
-    ajax_data: [],
-    AuthToken: "",
-    documento:"",
-    clave: ""
-},
-methods: {
-  login: function(event){
-    event.preventDefault();
-    this.$http.get(ws + 'Pacientes.svc/autenticarpaciente?Usuario=' + this.documento + '&Clave=' + this.clave).then(function(response){
-     this.ajax_data = response.body;
-     this.AuthToken = this.ajax_data.AutenticarPacienteResult.AuthToken;
-
-     if (this.AuthToken != null ){
-      console.log("login exitoso");
-
-      this.$cookies.set("documento", this.documento);
-      this.$cookies.set("clave", this.clave);
-
-      document.getElementById("loginForm").submit();
-     }else{
-       console.log("login fallido");
-       event.preventDefault();
-     }
-   }, function(){
-     console.log("error comunicacion vuelva a intentar");
-  });
-  console.log("fin");
-  }
-}
-});
-
-</script>

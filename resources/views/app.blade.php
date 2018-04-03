@@ -43,12 +43,12 @@
           <ul class="nav navbar-nav">
             <li><a href="{{ route('inicio')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio </a></li>
             <li><a href="{{ route('mis-datos')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mis Datos</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Mis Turnos</a></li>
-            <li><a href="#"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Nuevo Turno</a></li>
+            <li><a href="{{ route('turnos')}}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Turnos</a></li>
+            <li><a href="{{ route('nuevoturno') }}"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Nuevo Turno</a></li>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <button type="submit" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Nuevo Turno</button>
+            <a href="{{ route('nuevoturno') }}" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Nuevo Turno</a>
           </ul>
 
           <ul class="nav navbar-nav navbar-right">

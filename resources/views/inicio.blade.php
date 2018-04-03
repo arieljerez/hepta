@@ -8,16 +8,16 @@
     <div class="panel-heading">Ultimos Turnos</div>
     <div class="panel-body">
 
-   <table class="table table-hover">
-        <tbody>
-            <tr v-for="(ultimoturno, index) in ultimosturnos">
-              <td>@{{ ultimoturno.FechaTurno }}</td>
-              <td>@{{ ultimoturno.Profesional }}</td>
-              <td>@{{ ultimoturno.Especialidad }}</td>
-              <td><a href="nuevoturno" class="btn btn-success">Nuevo Turno</a></td>
-            </tr>
-        </tbody>
-   </table>
+     <table class="table table-hover">
+          <tbody>
+              <tr v-for="(ultimoturno, index) in ultimosturnos">
+                <td>@{{ ultimoturno.FechaTurno }}</td>
+                <td>@{{ ultimoturno.Profesional }}</td>
+                <td>@{{ ultimoturno.Especialidad }}</td>
+                <td><a href="nuevoturno" class="btn btn-success">Nuevo Turno</a></td>
+              </tr>
+          </tbody>
+     </table>
 
     </div>
   </div>  <!-- /medico -->
