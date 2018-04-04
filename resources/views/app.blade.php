@@ -21,6 +21,7 @@
     <!-- wizard -->
     <link href="wizard/prettify.css" rel="stylesheet">
     <link href="css/sticky-footer-navbar.css" rel="stylesheet">
+    @yield('css');
   </head>
 
   <body>

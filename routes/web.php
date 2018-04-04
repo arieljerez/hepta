@@ -14,6 +14,7 @@
 // Nuevo cliente con un url base
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+
 Route::get('/', function () {
     return view('login');
 })->name('login');
@@ -45,7 +46,6 @@ Route::post('login', function (){
       return redirect('/');
   }
 
-
   $paciente = $body->AutenticarPacienteResult->Pacientes[0];
   $CodigoPaciente = $paciente->CodigoPaciente;
 
@@ -58,9 +58,6 @@ Route::post('login', function (){
 
 Route::get('nuevoturno', function () {
 
-  //if (session('documento') == ""){
-  //  return redirect()->route('login');
-  //}
     $documento = session('documento');
     $clave = session('clave');;
 
@@ -69,6 +66,7 @@ Route::get('nuevoturno', function () {
 
 Route::get('inicio', function () {
   $CodigoPaciente = session('CodigoPaciente');
+
   return view('inicio',compact('CodigoPaciente'));
 
 })->name('inicio');
