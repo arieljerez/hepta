@@ -10,47 +10,30 @@
 
      <table class="table table-hover">
           <tbody>
-              <tr v-for="(ultimoturno, index) in ultimosturnos">
-                <td>@{{ ultimoturno.FechaTurno }}</td>
-                <td>@{{ ultimoturno.Profesional }}</td>
-                <td>@{{ ultimoturno.Especialidad }}</td>
+            @foreach ($TurnosPaciente as $TurnoPaciente)
+
+            @php
+              $dt = \App\Http\Controllers\TurnoController::ObtenerObjectoFecha( $TurnoPaciente->FechaTurno  );
+              $FechaTurno =  $dt->format('d/m/Y');
+
+              $hora = str_replace("(-","(",$TurnoPaciente->Hora);
+              $dt = \App\Http\Controllers\TurnoController::ObtenerObjectoFecha( $hora );
+              $HoraTurno =  $dt->format('H:m');
+            @endphp
+
+              <tr>
+                <td>{{ $FechaTurno }}</td>
+                <td>{{ $HoraTurno }}</td>
+                <td>{{ $TurnoPaciente->Profesional }}</td>
+                <td>{{ $TurnoPaciente->Especialidad }}</td>
                 <td><a href="nuevoturno" class="btn btn-success">Nuevo Turno</a></td>
               </tr>
+            @endforeach
+
           </tbody>
      </table>
 
     </div>
   </div>  <!-- /medico -->
 </div>
-@endsection
-@section('js')
-<script src="js/json.date-extensions.min.js"></script>
-<script>
-    JSON.useDateParser();
-</script>
-<script type="text/javascript">
-
-  var ws = "http://appturnos.markey.com.ar/hepta/";
-  var vm =  new Vue({
-    el: "#app",
-    data: {
-      ultimosturnos: [],
-      CodigoPaciente: '{{ $CodigoPaciente }}'
-    },
-
-    created: function(){
-
-    this.$http.get(ws + 'Pacientes.svc/ObtenerUltimosTurnosPaciente?CodigoPaciente='+this.CodigoPaciente).then(function(response){
-
-        var  ajax_data = response.body;
-        this.ultimosturnos = ajax_data.ObtenerUltimosTurnosPacienteResult.TurnosPaciente;
-
-      }, function(){
-        console.log("error comunicacion vuelva a intentar");
-   });
-
-
-  }
-});
-</script>
 @endsection

@@ -16,9 +16,13 @@ use GuzzleHttp\Client;
 use Carbon\Carbon;
 
 Route::get('/', function () {
+    return redirect()->route('login');
+})->name('root');
+
+
+Route::get('login', function () {
     return view('login');
 })->name('login');
-
 
 Route::post('login', function (){
   $documento = request()->input('documento');
@@ -41,7 +45,6 @@ Route::post('login', function (){
   ]);
   $body = json_decode($response->getBody()->getContents());
 
-
   if($body->AutenticarPacienteResult->AuthToken == ""){
       return redirect('/');
   }
@@ -50,24 +53,45 @@ Route::post('login', function (){
   $CodigoPaciente = $paciente->CodigoPaciente;
 
   session(['CodigoPaciente' => $CodigoPaciente]);
+  session(['Paciente' => $paciente]);
 
   return redirect()->route('inicio');
 
 })->name('login');
 
+Route::get('logout', function(){
+  $request->session()->flush();
+  return redirect('/');
+});
 
 Route::get('nuevoturno', function () {
-
-    $documento = session('documento');
-    $clave = session('clave');;
-
-    return view('nuevoturno',compact(['documento','clave']));
+  $paciente = json_encode( session('Paciente'));
+  return view('nuevoturno',compact('paciente'));
 })->name('nuevoturno');
 
 Route::get('inicio', function () {
+
   $CodigoPaciente = session('CodigoPaciente');
 
-  return view('inicio',compact('CodigoPaciente'));
+  $http = new Client([
+      // Base URI is used with relative requests
+      'base_uri' => 'http://appturnos.markey.com.ar',
+      // You can set any number of default request options.
+      'timeout'  => 2.0,
+  ]);
+
+  $url = "hepta/Pacientes.svc/ObtenerUltimosTurnosPaciente";
+
+  $response = $http->request('GET',$url, [
+    'query' => [
+          'CodigoPaciente' => $CodigoPaciente,
+      ],
+  ]);
+
+  $body = json_decode($response->getBody()->getContents());
+  $TurnosPaciente = $body->ObtenerUltimosTurnosPacienteResult->TurnosPaciente;
+
+  return view('inicio',compact('TurnosPaciente'));
 
 })->name('inicio');
 

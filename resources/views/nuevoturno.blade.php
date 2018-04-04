@@ -274,10 +274,10 @@
         coberturas: [],
         especialidades:[],
         medicos: [],
-        paciente: [],
+        paciente: [
+          {'Apellido':'LANDA','CodigoPaciente':'188780','Nombre':'DIEGO GERMAN','Sexo':'M'},
+        ],
         estudios:[],
-        documento: "{{ $documento }}",
-        clave: "{{ $clave }}",
         ajax_data: [],
         CodigoEspecialidad: 0,
         CodigoCobertura:1,
@@ -299,26 +299,11 @@
         CodigoTurno: 0,
     },
       created: function(){
-        this.$http.get(ws + 'Pacientes.svc/autenticarpaciente?Usuario=' + this.documento + '&Clave=' + this.clave).then(function(response){
-        this.ajax_data = response.body;
-        this.AuthToken = this.ajax_data.AutenticarPacienteResult.AuthToken;
-        this.paciente = this.ajax_data.AutenticarPacienteResult.Pacientes[0];
-
-        if (this.AuthToken != null ){
-          console.log("login exitoso");
-
+        console.log(this.paciente.Apellido); 
           this.obtenerCoberturas();
           this.obtenerEspecialidades();
           //this.obtenerMedicos();
           this.obtenerEstudios();
-
-        }else{
-          console.log("login fallido");
-          window.location.href = "index.html";
-        }
-      }, function(){
-        console.log("error comunicacion vuelva a intentar");
-     });
    },
    methods:{
      obtenerCoberturas: function(){
