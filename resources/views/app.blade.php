@@ -52,19 +52,14 @@
             <a href="{{ route('nuevoturno') }}" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Nuevo Turno</a>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Nombre, usuario <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="{{ route('login') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ session('Paciente')->Apellido }}, {{session('Paciente')->Nombre}} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="{{ route('login') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        </ul>
 
         </div>
 

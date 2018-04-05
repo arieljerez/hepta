@@ -140,7 +140,30 @@ Route::get('registrarse', function () {
 })->name('registrarse');
 
 Route::get('mis-datos', function () {
-    return view('mis_datos');
+    $paciente = session('Paciente');
+
+    $CodigoPaciente = session('CodigoPaciente');
+
+    $http = new Client([
+        // Base URI is used with relative requests
+        'base_uri' => 'http://appturnos.markey.com.ar',
+        // You can set any number of default request options.
+        'timeout'  => 2.0,
+    ]);
+
+    $url = "hepta/Pacientes.svc/ObtenerCoberturasPaciente";
+
+    $response = $http->request('GET',$url, [
+      'query' => [
+            'CodigoPaciente' => $CodigoPaciente,
+        ],
+    ]);
+
+    $body = json_decode($response->getBody()->getContents());
+
+    $coberturas = $body->ObtenerCoberturasPacienteResult->CoberturasPaciente;
+  //dd($coberturas);
+    return view('mis_datos', compact('paciente','coberturas'));
 })->name('mis-datos');
 
 Route::get('turnos','TurnoController@all')->name('turnos');

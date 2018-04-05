@@ -299,7 +299,7 @@
         CodigoTurno: 0,
     },
       created: function(){
-        console.log(this.paciente.Apellido); 
+          this.paciente = {!! $paciente !!};
           this.obtenerCoberturas();
           this.obtenerEspecialidades();
           //this.obtenerMedicos();
