@@ -60,7 +60,7 @@ Route::post('login', function (){
 })->name('login');
 
 Route::get('logout', function(){
-  $request->session()->flush();
+  session()->flush();
   return redirect('/');
 });
 

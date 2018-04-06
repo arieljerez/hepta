@@ -25,8 +25,8 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
         <div class="navbar-header">
           <div class="navbar-header">
              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -39,8 +39,8 @@
            </div>
 
         </div>
-
-        <div class="collapse navbar-collapse">
+        @if ( session()->has('Paciente') )
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li><a href="{{ route('inicio')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio </a></li>
             <li><a href="{{ route('mis-datos')}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Mis Datos</a></li>
@@ -62,7 +62,7 @@
         </ul>
 
         </div>
-
+        @endif
 
 
       </div>

@@ -59,11 +59,14 @@
     <div class="row">
       <div class="col-4">
           <h2 class="form-signin-heading">Módulo de autogestión</h2>
-          <label for="documento">Número de documento</label>
-          <input type="number" id="documento" name="documento" v-model="documento" class="form-control" placeholder="9999999" required autofocus>
-          <label for="clave">Contraseña</label>
-          <input type="password" id="clave" name="clave" v-model="clave" class="form-control" placeholder="*******" required>
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+<div class="form-group">
+  <label for="documento">Número de documento</label>
+  <input type="number" id="documento" name="documento" v-model="documento" class="form-control" placeholder="9999999" required autofocus>
+  <label for="clave">Contraseña</label>
+  <input type="password" id="clave" name="clave" v-model="clave" class="form-control" placeholder="*******" required>
+
+</div>
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
           {{ csrf_field() }}
 
           <p>
