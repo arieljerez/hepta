@@ -19,9 +19,9 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <!-- wizard -->
-    <link href="wizard/prettify.css" rel="stylesheet">
-    <link href="css/sticky-footer-navbar.css" rel="stylesheet">
-    @yield('css');
+    <link href="{{ url('wizard/prettify.css')}}" rel="stylesheet">
+    <link href="{{ url('css/sticky-footer-navbar.css')}}" rel="stylesheet">
+    @yield('css')
   </head>
 
   <body>
@@ -79,8 +79,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="wizard/jquery.bootstrap.wizard.js"></script>
-    <script src="wizard/prettify.js"></script>
+    <script src="{{url('wizard/jquery.bootstrap.wizard.js')}}"></script>
+    <script src="{{url('wizard/prettify.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
     <script src="https://unpkg.com/vue-cookies@1.5.5/vue-cookies.js"></script>

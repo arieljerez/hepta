@@ -1,5 +1,4 @@
-@extends('app');
-
+@extends('app')
 @section('content')
 
 <div id="app">
@@ -26,7 +25,7 @@
                 <td>{{ $HoraTurno }}</td>
                 <td>{{ $TurnoPaciente->Profesional }}</td>
                 <td>{{ $TurnoPaciente->Especialidad }}</td>
-                <td><a href="nuevoturno" class="btn btn-success">Nuevo Turno</a></td>
+                <td><a href="{{ url("nuevoturno/$TurnoPaciente->CodigoCobertura/$TurnoPaciente->CodigoPlan/$TurnoPaciente->CodigoEspecialidad/$TurnoPaciente->CodigoProfesional")}}" class="btn btn-success">Nuevo Turno</a></td>
               </tr>
             @endforeach
 

@@ -64,9 +64,10 @@ Route::get('logout', function(){
   return redirect('/');
 });
 
-Route::get('nuevoturno', function () {
+
+Route::get('nuevoturno/{CodigoCobertura?}/{CodigoPlan?}/{CodigoEspecialidad?}/{CodigoProfesional?}', function ($CodigoCobertura = null, $CodigoPlan= null, $CodigoEspecialidad = null, $CodigoProfesional = null) {
   $paciente = json_encode( session('Paciente'));
-  return view('nuevoturno',compact('paciente'));
+  return view('nuevoturno',compact(['paciente','CodigoCobertura','CodigoPlan','CodigoEspecialidad','CodigoProfesional']));
 })->name('nuevoturno');
 
 Route::get('inicio', function () {
@@ -162,7 +163,7 @@ Route::get('mis-datos', function () {
     $body = json_decode($response->getBody()->getContents());
 
     $coberturas = $body->ObtenerCoberturasPacienteResult->CoberturasPaciente;
-  //dd($coberturas);
+
     return view('mis_datos', compact('paciente','coberturas'));
 })->name('mis-datos');
 

@@ -96,7 +96,7 @@
                       <tbody>
                           <tr v-for="(opcion, index) in opciones" class="item_check2">
                             <td>
-                                <input type="radio" name="opciones" :value="opcion.valor">
+                                <input type="radio" name="opciones" :value="opcion.valor" v-model="Opcion">
                             </td>
                             <td>@{{ opcion.descripcion }}</td>
                           </tr>
@@ -234,6 +234,7 @@
     CodigoPlan  @{{ CodigoPlan }}
     CodigoProfesional  @{{ CodigoProfesional }}
     CodigosEstudios @{{ CodigosEstudios }}
+    Opcion @{{ Opcion }}
 </pre>
 </div>
 
@@ -274,21 +275,20 @@
         coberturas: [],
         especialidades:[],
         medicos: [],
-        paciente: [
-          {'Apellido':'LANDA','CodigoPaciente':'188780','Nombre':'DIEGO GERMAN','Sexo':'M'},
-        ],
+        paciente: [],
         estudios:[],
         ajax_data: [],
-        CodigoEspecialidad: 0,
-        CodigoCobertura:1,
-        CodigoPlan:1,
-        CodigoProfesional:0,
+        CodigoEspecialidad: '{{ $CodigoEspecialidad }}',
+        CodigoCobertura: '{{ $CodigoCobertura }}',
+        CodigoPlan: '{{ $CodigoPlan }}',
+        CodigoProfesional: '{{ $CodigoProfesional }}',
         CodigosEstudios: [],
         opciones: [
             {'valor':'Especialidad', 'descripcion': 'Busqueda por Especialidad' },
             {'valor':'Medico', 'descripcion': 'Busqueda por Médico' },
             {'valor':'Estudios', 'descripcion': 'Busqueda por Estudios' },
         ],
+        Opcion: '{{ $CodigoEspecialidad <> '' ? 'Medico': '' }}',
         turnos: [
           {'CodigoTurno': 1 ,'Profesional' :'aaaaaa -1', 'Especialidad': 'sdasdsad', 'Estudio':'eeeee', 'Fecha': '21/03/2018'},
           {'CodigoTurno': 2 ,'Profesional' :'aaaaaa -2', 'Especialidad': 'sdasdsad', 'Estudio':'eeeee', 'Fecha': '21/03/2018'},
@@ -415,17 +415,25 @@
 
         }, onTabShow: function(tab, navigation, index) {
 
-          //console.log(index);
-          //console.log(navigation.find('li').find('style').length);
           var $total = navigation.find('li').length;
           var $current = index+1+2;
           var $percent = ($current/$total) * 100;
           $('#rootwizard .progress-bar').css({width:$percent+'%'});
 
         }
-        , onTabClick(tab, navigation, index){
+        , onTabClick: function(tab, navigation, index){
           return false;
         }
+        , onInit: function(tab, navigation, index){
+
+          @isset($CodigoCobertura)
+            setTimeout(function() {
+                  $('#rootwizard').bootstrapWizard('show', 6);
+            }, 1);
+            vm.obtenerMedicos();
+          @endisset
+
+          }
       });
       window.prettyPrint && prettyPrint();
 
