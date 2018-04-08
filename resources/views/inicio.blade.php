@@ -3,6 +3,7 @@
 
 <div id="app">
 
+        <div class="col-sm-8 col-sm-offset-8 col-md-8 col-md-offset-2">
   <div class="panel panel-success">
     <div class="panel-heading">Ultimos Turnos</div>
     <div class="panel-body">
@@ -21,10 +22,10 @@
             @endphp
 
               <tr>
-                <td>{{ $FechaTurno }}</td>
-                <td>{{ $HoraTurno }}</td>
-                <td>{{ $TurnoPaciente->Profesional }}</td>
-                <td>{{ $TurnoPaciente->Especialidad }}</td>
+                <td> <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>{{ $FechaTurno }}
+                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>{{ $HoraTurno }}</td>
+                <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ $TurnoPaciente->Profesional }}</td>
+                <td><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>{{ $TurnoPaciente->Especialidad }}</td>
                 <td><a href="{{ url("nuevoturno/$TurnoPaciente->CodigoCobertura/$TurnoPaciente->CodigoPlan/$TurnoPaciente->CodigoEspecialidad/$TurnoPaciente->CodigoProfesional")}}" class="btn btn-success">Nuevo Turno</a></td>
               </tr>
             @endforeach
@@ -34,5 +35,6 @@
 
     </div>
   </div>  <!-- /medico -->
+</div>
 </div>
 @endsection
