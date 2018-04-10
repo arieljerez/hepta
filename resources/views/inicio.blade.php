@@ -22,10 +22,10 @@
             @endphp
 
               <tr>
-                <td> <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>{{ $FechaTurno }}
-                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span>{{ $HoraTurno }}</td>
-                <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>{{ $TurnoPaciente->Profesional }}</td>
-                <td><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span>{{ $TurnoPaciente->Especialidad }}</td>
+                <td> <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> {{ $FechaTurno }}
+                  <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ $HoraTurno }}</td>
+                <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ $TurnoPaciente->Profesional }}</td>
+                <td><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{ $TurnoPaciente->Especialidad }}</td>
                 <td><a href="{{ url("nuevoturno/$TurnoPaciente->CodigoCobertura/$TurnoPaciente->CodigoPlan/$TurnoPaciente->CodigoEspecialidad/$TurnoPaciente->CodigoProfesional")}}" class="btn btn-success">Nuevo Turno</a></td>
               </tr>
             @endforeach

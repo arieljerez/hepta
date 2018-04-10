@@ -14,6 +14,7 @@
 // Nuevo cliente con un url base
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -21,6 +22,10 @@ Route::get('/', function () {
 
 
 Route::get('login', function () {
+  if (request()->session()->has('Paciente'))
+  {
+    return redirect('/inicio');
+  }
     return view('login');
 })->name('login');
 
@@ -59,19 +64,31 @@ Route::post('login', function (){
 
 })->name('login');
 
-Route::get('logout', function(){
-  session()->flush();
+Route::get('logout', function(Request $request){
+  $request->session()->forget('CodigoPaciente');
+  $request->session()->forget('Paciente');
+  $request->session()->flush();
+  $request->session()->regenerate();
   return redirect('/');
-});
+})->name('logout');
 
 
 Route::get('nuevoturno/{CodigoCobertura?}/{CodigoPlan?}/{CodigoEspecialidad?}/{CodigoProfesional?}', function ($CodigoCobertura = null, $CodigoPlan= null, $CodigoEspecialidad = null, $CodigoProfesional = null) {
+  if (!request()->session()->has('Paciente'))
+  {
+    return redirect('/');
+  }
+
   $paciente = json_encode( session('Paciente'));
   return view('nuevoturno',compact(['paciente','CodigoCobertura','CodigoPlan','CodigoEspecialidad','CodigoProfesional']));
 })->name('nuevoturno');
 
-Route::get('inicio', function () {
+Route::get('inicio', function (Request $request) {
 
+  if (!$request->session()->has('Paciente'))
+  {
+    return redirect('/');
+  }
   $CodigoPaciente = session('CodigoPaciente');
 
   $http = new Client([
@@ -113,21 +130,21 @@ Route::post('confirmar_email', function (){
     $fecha_nacimiento = request()->input('fecha_nacimiento'); //"2018-03-17"
 
     $d = DateTime::createFromFormat("Y-m-d", $fecha_nacimiento);
-    $fecha_nacimiento = $d->format("m/d/Y"); // or any you want
+    $fecha_nacimiento_mdy = $d->format("m/d/Y"); // or any you want
 
-    $url = $uri_base."VerificarPaciente?Documento=$documento&FechaNacimiento=$fecha_nacimiento";
+    $url = $uri_base."VerificarPaciente";
 
     $response = $http->request('GET',$url, [
       'query' => [
             'Documento' => request()->input('documento'),
-            'FechaNacimiento' => $fecha_nacimiento, // '5497032',
+            'FechaNacimiento' => $fecha_nacimiento_mdy, // '5497032',
         ],
     ]);
 
     $array = (json_decode((string) $response->getBody(), true));
 
     if($array['VerificarPacienteResult']['AuthToken'] != ""){
-        return view('confirmar_email', compact(['documento','fecha_nacimiento'=> $fecha_nacimiento_redirect]));
+        return view('confirmar_email', compact(['documento','fecha_nacimiento']));
     }
     $fecha_nacimiento = request()->input('fecha_nacimiento');
     return redirect()->route('registrarse',compact(['documento','fecha_nacimiento']));
@@ -141,6 +158,11 @@ Route::get('registrarse', function () {
 })->name('registrarse');
 
 Route::get('mis-datos', function () {
+  if (!request()->session()->has('Paciente'))
+  {
+    return redirect('/');
+  }
+
     $paciente = session('Paciente');
 
     $CodigoPaciente = session('CodigoPaciente');

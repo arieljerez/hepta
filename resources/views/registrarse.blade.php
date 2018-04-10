@@ -9,7 +9,7 @@
     <div class="panel-body">
     <div class="row">
       <div class="col-md-4">
-        <img src="" alt="..." class="img-thumbnail">
+        <img class="card-img-top" width="150rem" src="{{ url('images/Man_silhouette.svg.png') }}">
       </div>
 
       <div class="col-md-8">

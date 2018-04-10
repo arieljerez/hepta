@@ -39,7 +39,7 @@
            </div>
 
         </div>
-        @if ( session()->has('Paciente') )
+        @if ( request()->session()->has('Paciente') )
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li><a href="{{ route('inicio')}}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Inicio </a></li>
@@ -56,7 +56,7 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> {{ session('Paciente')->Apellido }}, {{session('Paciente')->Nombre}} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{{ route('login') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión</a></li>
+              <li><a href="{{ route('logout') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar Sesión</a></li>
             </ul>
           </li>
         </ul>
