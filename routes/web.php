@@ -83,35 +83,7 @@ Route::get('nuevoturno/{CodigoCobertura?}/{CodigoPlan?}/{CodigoEspecialidad?}/{C
   return view('nuevoturno',compact(['paciente','CodigoCobertura','CodigoPlan','CodigoEspecialidad','CodigoProfesional']));
 })->name('nuevoturno');
 
-Route::get('inicio', function (Request $request) {
-
-  if (!$request->session()->has('Paciente'))
-  {
-    return redirect('/');
-  }
-  $CodigoPaciente = session('CodigoPaciente');
-
-  $http = new Client([
-      // Base URI is used with relative requests
-      'base_uri' => 'http://appturnos.markey.com.ar',
-      // You can set any number of default request options.
-      'timeout'  => 2.0,
-  ]);
-
-  $url = "hepta/Pacientes.svc/ObtenerUltimosTurnosPaciente";
-
-  $response = $http->request('GET',$url, [
-    'query' => [
-          'CodigoPaciente' => $CodigoPaciente,
-      ],
-  ]);
-
-  $body = json_decode($response->getBody()->getContents());
-  $TurnosPaciente = $body->ObtenerUltimosTurnosPacienteResult->TurnosPaciente;
-
-  return view('inicio',compact('TurnosPaciente'));
-
-})->name('inicio');
+Route::get('inicio', 'InicioController@Index' )->name('inicio');
 
 Route::get('recuperarclave', function () {
     return view('recuperarclave');
