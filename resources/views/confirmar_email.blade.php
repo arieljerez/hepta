@@ -25,7 +25,7 @@
               </div>
               <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                  <a href="" type="button" name="button" class="btn btn-primary">Cancelar</a>
+                  <a href="{{ url('/') }}" type="button" name="button" class="btn btn-primary">Cancelar</a>
                   <button type="submit" name="button" class="btn btn-success pull-right">Generar</button>
                 </div>
               </div>

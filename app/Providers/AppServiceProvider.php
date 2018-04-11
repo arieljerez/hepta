@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('GuzzleHttp\Client', function(){
           return new Client([
              // Base URI is used with relative requests
-             'base_uri' => 'http://appturnos.markey.com.ar',
+             'base_uri' => env('WS_BASE_URI', 'http://appturnos.markey.com.ar'),
              // You can set any number of default request options.
              'timeout'  => 2.0,
          ]);

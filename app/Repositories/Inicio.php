@@ -6,7 +6,7 @@ Class Inicio extends GuzzleHttpRequest
 {
     public function ObtenerUltimosTurnosPaciente($CodigoPaciente)
     {
-      $body = $this->get("hepta/Pacientes.svc/ObtenerUltimosTurnosPaciente", [
+      $body = $this->get("Pacientes.svc/ObtenerUltimosTurnosPaciente", [
         'query' => [
               'CodigoPaciente' => $CodigoPaciente,
           ],

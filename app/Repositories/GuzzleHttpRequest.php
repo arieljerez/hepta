@@ -13,8 +13,13 @@ Class GuzzleHttpRequest
 
   public function get($url,$query)
   {
-    $response = $this->client->request('GET',$url, $query);
+    $response = $this->client->request('GET', $this->GetUrl($url) , $query);
 
     return json_decode($response->getBody()->getContents());
+  }
+
+  public function GetUrl($url)
+  {
+    return env('WS_RESOURCE', 'hepta').'/'.$url;
   }
 }
