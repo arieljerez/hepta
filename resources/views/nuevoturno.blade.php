@@ -45,7 +45,8 @@
           <li class="previous"><a href="#">Anterior</a></li>
           <li class="next last" style="display:none;"><a href="#">Last</a></li>
           <li class="next"><a href="#">Siguiente</a></li>
-          <li class="finish btn-lg"><a href="javascript:;" data-toggle="modal" data-target="#myModal">Tomar Turno</a></li>
+          <li class="finish btn-lg">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Tomar Turno</button></li>
         </ul>
 
     </div>
@@ -63,6 +64,7 @@
 
 </div>
 
+<template id="bs-modal">
 <!-- modal -->
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -76,19 +78,24 @@
           <div class="modal-body">
             <p>¿Confirma la reseva del turno?</p>
 
+              <p>Profesional: @{{ NuevoTurno.Profesional}}</p>
+              <p>Especialidad: @{{ NuevoTurno.Especialidad}}</p>
+
+              <p>Fecha: @{{ NuevoTurno.FechaTurno }}</p>
+              <p>Hora: @{{ NuevoTurno.HoraTurno  }}</p>
 
 
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-success" >Sí, Confirmo</button>
+            <button type="submit" class="btn btn-success" @click="grabarTurno(NuevoTurno)">Sí, Confirmo</button>
           </div>
         </div>
 
       </div>
     </div>
 <!-- /modal -->
-
+</template>
 </div>  <!-- /row -->
 
 
@@ -99,11 +106,29 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
     <script type="text/javascript">
 
+    Vue.component('modal', {
+        template: '#bs-modal',
+        data: function () {
+            console.log("### DATA");
+        },
+    });
+
     Vue.filter('date_format', function (value) {
 
       var date = new moment(parseInt(value.substr(6)));
       return date.format('DD/MM/YYYY hh:mm');
-    return value;
+    })
+
+    Vue.filter('fecha_format', function (value) {
+
+      var date = new moment(parseInt(value.substr(6)));
+      return date.format('DD/MM/YYYY');
+    })
+
+    Vue.filter('hora_format', function (value) {
+
+      var date = new moment(parseInt(value.substr(6)));
+      return date.format('hh:mm');
     })
 
     var ws = "http://appturnos.markey.com.ar/hepta/";
@@ -163,7 +188,7 @@
          return;
        }
 
-       this.$http.get(ws +'Turnos.svc/ObtenerProfesionales?CodigoEspecialidad='+ this.CodigoEspecialidad +'&CodigoCobertura='+this.CodigoCobertura+'&CodigoPlan='+this.CodigoPlan).then(function(response){
+       this.$http.post(ws +'Turnos.svc/ObtenerProfesionales?CodigoEspecialidad='+ this.CodigoEspecialidad +'&CodigoCobertura='+this.CodigoCobertura+'&CodigoPlan='+this.CodigoPlan).then(function(response){
           this.ajax_data = response.body;
           this.medicos = this.ajax_data.ObtenerProfesionalesResult.Profesionales;
         }, function(){
@@ -181,6 +206,32 @@
      CodigoCoberturaPlanValue: function(val1,val2){
        return val1 + ' ' + val2;
      },
+     grabarTurno: function(NuevoTurno){
+
+       //GrabarTurno?CodigoProfesional={CodigoProfesional}&CodigoServicio={CodigoServicio}&CodigoDiaSemana={CodigoDiaSemana}&CodigoTurno={CodigoTurno}&CodigoPaciente={CodigoPaciente}&FechaTurno={FechaTurno}&CodigoEspecialidad={CodigoEspecialidad}&CodigoSubEspecialidad={CodigoSubEspecialidad}&CodigoCobertura={CodigoCobertura}&CodigoPlan={CodigoPlan}
+
+       //La FechaTurno es string con formato YYYYMMDD HH:MM
+       var FechaTurno = new moment(NuevoTurno.FechaTurno);
+       FechaTurno =  FechaTurno.format('YYYYMMDD') + ' ' + NuevoTurno.HoraTurno;
+       if (this.CodigoProfesional > 0 && this.CodigoEspecialidad > 0){
+         var turnos_svc = 'Turnos.svc/GrabarTurno?CodigoProfesional='+ NuevoTurno.CodigoProfesional
+                                        + '&CodigoServicio=' + NuevoTurno.CodigoServicio
+                                        + '&CodigoEspecialidad=' + NuevoTurno.CodigoEspecialidad
+                                        + '&CodigoDiaSemana=' + NuevoTurno.CodigoDiaSemana
+                                        + '&CodigoPaciente='+ this.paciente.CodigoPaciente
+                                        + '&CodigoTurno=' + NuevoTurno.CodigoTurno
+                                        + '&FechaTurno=' + FechaTurno
+                                        + '&CodigoSubEspecialidad=' + NuevoTurno.CodigoSubEspecialidad
+                                        + '&CodigoCobertura=' + this.CodigoCobertura
+                                        + '&CodigoPlan=' + this.CodigoPlan
+
+         this.$http.get(ws + turnos_svc).then(function(response){
+            console.log(response.body);
+          }, function(){
+             console.log("error al grabarTurno")
+         });
+       }
+     },
      hoy: function(){
        //console.log(new Date().toISOString().slice(0,10));
        return new Date().toISOString().slice(0,10);
@@ -194,11 +245,18 @@
          var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde
          this.$http.get(ws + '/' + turnos_svc).then(function(response){
             this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
+
+            this.turnos.forEach(function(element) {
+              var date = new moment(parseInt(element.FechaTurno.substr(6)));
+              element.FechaTurno =  date.format('DD/MM/YYYY');
+              element.HoraTurno =  date.format('hh:mm');
+            });
           }, function(){
              console.log("error al recuperar turnos")
          });
        }
-     }
+     },
+
    },
    computed: {
       CodigoCoberturaPlan: {
@@ -216,6 +274,7 @@
       TurnosDisponibles: function (){
         return this.turnos.length;
       },
+
   },
 });
 
