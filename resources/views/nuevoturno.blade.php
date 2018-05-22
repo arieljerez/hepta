@@ -226,7 +226,10 @@
                                         + '&CodigoPlan=' + this.CodigoPlan
 
          this.$http.get(ws + turnos_svc).then(function(response){
-            console.log(response.body);
+            alert(response.body.GrabarTurnoResult.Mensaje);
+            if (response.body.GrabarTurnoResult.CodigoRespuesta == 0){
+              window.location = "{!! env('APP_URL') !!}/inicio";
+            }
           }, function(){
              console.log("error al grabarTurno")
          });
