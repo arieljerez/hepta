@@ -52,7 +52,7 @@
     <div class="row">
       <div class="col-4">
         <a href="#" class="thumbnail well-lg" style="background-color: #D8E2EB">
-          <img src="images/logo_grande.png" alt="...">
+          <img src="{{ asset('images/logo_grande.png') }}" alt="...">
         </a>
       </div>
     </div>
