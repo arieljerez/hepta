@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
              // Base URI is used with relative requests
              'base_uri' => env('WS_BASE_URI', 'http://appturnos.markey.com.ar'),
              // You can set any number of default request options.
-             'timeout'  => 2.0,
+             'timeout'  => 10.0,
          ]);
        });
     }

@@ -113,25 +113,36 @@
         },
     });
 
+    Vue.component('fecha-turno', {
+      props: ['title'],
+      template: '<div><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> @{{ title | fecha_format }}</div>'
+    })
+
+    Vue.component('hora-turno', {
+      props: ['title'],
+      template: '<div><span class="glyphicon glyphicon-time" aria-hidden="true"></span> @{{ title | hora_format }}</div>'
+    })
+
     Vue.filter('date_format', function (value) {
 
-      var date = new moment(parseInt(value.substr(6)));
+      var date = new moment(value);
       return date.format('DD/MM/YYYY hh:mm');
     })
 
     Vue.filter('fecha_format', function (value) {
 
-      var date = new moment(parseInt(value.substr(6)));
+      var date = new moment(value);
       return date.format('DD/MM/YYYY');
     })
 
     Vue.filter('hora_format', function (value) {
 
-      var date = new moment(parseInt(value.substr(6)));
-      return date.format('hh:mm');
+      var date = new moment(value);
+      return date.format('HH:mm');
     })
 
-    var ws = "http://appturnos.markey.com.ar/hepta/";
+    var ws = '{{ env("WS_BASE_URI")  ."/". env("WS_RESOURCE")."/" }}';
+
     var vm =  new Vue({
       el: "#app",
       data: {
@@ -212,7 +223,8 @@
 
        //La FechaTurno es string con formato YYYYMMDD HH:MM
        var FechaTurno = new moment(NuevoTurno.FechaTurno);
-       FechaTurno =  FechaTurno.format('YYYYMMDD') + ' ' + NuevoTurno.HoraTurno;
+       FechaTurno =  FechaTurno.format('YYYYMMDD HH:mm')
+       console.log(FechaTurno);
        if (this.CodigoProfesional > 0 && this.CodigoEspecialidad > 0){
          var turnos_svc = 'Turnos.svc/GrabarTurno?CodigoProfesional='+ NuevoTurno.CodigoProfesional
                                         + '&CodigoServicio=' + NuevoTurno.CodigoServicio
@@ -249,11 +261,13 @@
          this.$http.get(ws + '/' + turnos_svc).then(function(response){
             this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
 
+    /*
             this.turnos.forEach(function(element) {
               var date = new moment(parseInt(element.FechaTurno.substr(6)));
               element.FechaTurno =  date.format('DD/MM/YYYY');
               element.HoraTurno =  date.format('hh:mm');
             });
+    */
           }, function(){
              console.log("error al recuperar turnos")
          });

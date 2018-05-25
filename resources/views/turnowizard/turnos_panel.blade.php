@@ -7,7 +7,9 @@
               <tr v-for="(turno, index) in turnos" class="item_check2">
                 <td>
                 <input type="radio" id="CodigoTurno"  :value="turno" v-model="NuevoTurno">
-                @{{ turno.Dia }}  @{{ turno.Fecha| date_format }} - @{{ turno.Profesional }} - @{{ turno.Especialidad }} </td>
+                @{{ turno.Dia }}  <fecha-turno :title="turno.FechaTurno"></fecha-turno><hora-turno :title="turno.FechaTurno"></hora-turno> @{{ turno.Profesional }} - @{{ turno.Especialidad }}
+
+              </td>
               </tr>
           </tbody>
        </table>
