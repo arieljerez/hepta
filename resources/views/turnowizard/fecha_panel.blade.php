@@ -5,6 +5,6 @@
       Seleccione la fecha estimada.
     </p>
    <label for="Fecha">Primer turno a partir del: </label>
-   <input type="date" name="Fecha" class="form-control" :value="hoy()" :min="hoy()" required>
+   <input type="date" name="Fecha" class="form-control" v-model="FechaTurno" required>
   </div>
 </div>

@@ -3,7 +3,7 @@
 @section('content')
 <div class="row">
 
-        <div class="col-sm-8 col-sm-offset-8 col-md-8 col-md-offset-2">  <div class="panel panel-default panel-info">
+        <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">  <div class="panel panel-default panel-info">
       <div class="panel-heading">Datos Personales</div>
       <div class="panel-body">
         <div class="card">

@@ -59,6 +59,7 @@
         CodigosEstudios @{{ CodigosEstudios }}
         Opcion @{{ Opcion }}
         NuevoTurno @{{ NuevoTurno }}
+        FechaTurno  @{{ FechaTurno }}
     </pre>
 
 
@@ -123,6 +124,27 @@
       template: '<div><span class="glyphicon glyphicon-time" aria-hidden="true"></span> @{{ title | hora_format }}</div>'
     })
 
+    Vue.component('profesional-tag', {
+      props: ['title'],
+      template: '<div><span class="glyphicon glyphicon-user" aria-hidden="true"></span> @{{ title }}</div>'
+    })
+
+    Vue.component('especialidad-tag', {
+      props: ['title'],
+      template: '<div><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> @{{ title }}</div>'
+    })
+
+    Vue.component('turno-estado-tag', {
+      props: ['estado'],
+      template: '<span :class="obtenerLabel(estado)">@{{ estado }}</span>',
+      methods:{
+        obtenerLabel: function (estado){
+          if(estado == "AUSENTE") return " label label-danger";
+          if(estado == "PRESENTE") return " label label-success";
+          if(estado == "FUTURO") return " label label-warning";
+        }
+      }
+    })
     Vue.filter('date_format', function (value) {
 
       var date = new moment(value);
@@ -167,9 +189,11 @@
         turnos: [],
         CodigoTurno: 0,
         NuevoTurno: [],
+        FechaTurno: ''
     },
       created: function(){
           this.paciente = {!! $paciente !!};
+          this.FechaTurno = this.hoy();
           this.obtenerCoberturas();
           this.obtenerEspecialidades();
           //this.obtenerMedicos();
@@ -249,13 +273,13 @@
      },
      hoy: function(){
        //console.log(new Date().toISOString().slice(0,10));
-       return new Date().toISOString().slice(0,10);
+       return new moment().format('YYYY-MM-DD');
      },
      CodigoCoberturaPlanValue: function(val1,val2){
        return val1 + ' ' + val2;
      },
      obtenerTurnos: function(){
-       FechaDesde = '20180601';
+       FechaDesde = new moment(this.FechaTurno).format('YYYYMMDD');
        if (this.CodigoProfesional > 0 && this.CodigoEspecialidad > 0){
          var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde
          this.$http.get(ws + '/' + turnos_svc).then(function(response){

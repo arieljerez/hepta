@@ -17,14 +17,8 @@
 
                   <fecha-turno title="{{  $TurnoPaciente->FechaTurno }}"></fecha-turno>
                   <hora-turno title="{{  $TurnoPaciente->FechaTurno }}"></hora-turno>
-
-                <p>
-                  <p>
-                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ $TurnoPaciente->Profesional }}
-                  </p>
-                  <p>
-                    <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{ $TurnoPaciente->Especialidad }}
-                  </p>
+                  <profesional-tag title="{{ $TurnoPaciente->Profesional }}"></profesional-tag>
+                  <especialidad-tag title="{{ $TurnoPaciente->Especialidad }}"></especialidad-tag>
 
                   <a href="{{ url("nuevoturno/$TurnoPaciente->CodigoCobertura/$TurnoPaciente->CodigoPlan/$TurnoPaciente->CodigoEspecialidad/$TurnoPaciente->CodigoProfesional")}}" class="btn btn-success pull-right">Nuevo Turno</a>
               </td>
@@ -57,16 +51,26 @@
     template: '<div><span class="glyphicon glyphicon-time" aria-hidden="true"></span> @{{ title | hora_format }}</div>'
   })
 
+  Vue.component('profesional-tag', {
+    props: ['title'],
+    template: '<div><span class="glyphicon glyphicon-user" aria-hidden="true"></span> @{{ title }}</div>'
+  })
+
+  Vue.component('especialidad-tag', {
+    props: ['title'],
+    template: '<div><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> @{{ title }}</div>'
+  })
+
   Vue.filter('fecha_format', function (value) {
 
     var date = new moment(value);
-    return date.format('DD/MM/YYYY ZZ');
+    return date.format('DD/MM/YYYY');
   })
 
     Vue.filter('hora_format', function (value) {
 
       var date = new moment(value);
-      return date.format('HH:mm A');
+      return date.format('HH:mm');
     })
     var vm =  new Vue({
       el: "#app",
