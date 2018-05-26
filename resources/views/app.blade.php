@@ -22,6 +22,26 @@
     <link href="{{ url('wizard/prettify.css')}}" rel="stylesheet">
     <link href="{{ url('css/sticky-footer-navbar.css')}}" rel="stylesheet">
     @yield('css')
+    <style type="text/css">
+    .loader {
+        border: 14px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 160px;
+        height: 160px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .tableFixHead { overflow-y: auto; height: 240px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 8px 16px; }
+    th { background:#eee; }
+
+    </style>
   </head>
 
   <body>

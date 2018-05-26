@@ -1,12 +1,4 @@
 @extends('app')
-@section('css')
-  <style>
-  .tableFixHead { overflow-y: auto; height: 240px; }
-  table { border-collapse: collapse; width: 100%; }
-  th, td { padding: 8px 16px; }
-  th { background:#eee; }
-  </style>
-@endsection
 
 @section('content')
 
@@ -60,6 +52,7 @@
         Opcion @{{ Opcion }}
         NuevoTurno @{{ NuevoTurno }}
         FechaTurno  @{{ FechaTurno }}
+        loading @{{ loading }}
     </pre>
 
 
@@ -189,51 +182,55 @@
         turnos: [],
         CodigoTurno: 0,
         NuevoTurno: [],
-        FechaTurno: ''
+        FechaTurno: '',
+        loading: false
     },
       created: function(){
           this.paciente = {!! $paciente !!};
-          this.FechaTurno = this.hoy();
-          this.obtenerCoberturas();
-          this.obtenerEspecialidades();
+          this.CodigoEspecialidad = 0;
+          //this.FechaTurno = this.hoy();
+          //this.obtenerCoberturas();
+          //this.obtenerEspecialidades();
           //this.obtenerMedicos();
           this.obtenerEstudios();
    },
    methods:{
      obtenerCoberturas: function(){
+       this.loading = true;
        this.$http.get(ws +'Pacientes.svc/ObtenerCoberturasPaciente?CodigoPaciente=' + this.paciente.CodigoPaciente ).then(function(response){
             this.ajax_data = response.body;
             this.coberturas = this.ajax_data.ObtenerCoberturasPacienteResult.CoberturasPaciente;
+       this.loading = false;
             }, function(){
                console.log("error al recuperar coberturas")
             });
 
      },
      obtenerEspecialidades: function(){
+       this.loading = true;
        this.$http.get(ws +'Turnos.svc/ObtenerEspecialidades').then(function(response){
           this.ajax_data = response.body;
           this.especialidades = this.ajax_data.ObtenerEspecialidadesResult.Especialidades;
+       this.loading = false;
         }, function(){
            console.log("error al recuperar especialidades")
        });
      },
      obtenerMedicos: function(){
 
-       if (!(this.CodigoEspecialidad > 0) ){
-         return;
-       }
-
+       this.loading = true;
        this.$http.post(ws +'Turnos.svc/ObtenerProfesionales?CodigoEspecialidad='+ this.CodigoEspecialidad +'&CodigoCobertura='+this.CodigoCobertura+'&CodigoPlan='+this.CodigoPlan).then(function(response){
-          this.ajax_data = response.body;
-          this.medicos = this.ajax_data.ObtenerProfesionalesResult.Profesionales;
+          this.medicos = response.body.ObtenerProfesionalesResult.Profesionales;
+          this.loading = false;
         }, function(){
            console.log("error al recuperar medicos")
        });
      },
      obtenerEstudios: function(){
+       this.loading = true;
        this.$http.get(ws +'Turnos.svc/ObtenerEstudios').then(function(response){
-          this.ajax_data = response.body;
-          this.estudios = this.ajax_data.ObtenerEstudiosResult.Estudios;
+          this.estudios = response.body.ObtenerEstudiosResult.Estudios;
+       this.loading = false;
         }, function(){
            console.log("error al recuperar estudios")
        });
@@ -242,13 +239,9 @@
        return val1 + ' ' + val2;
      },
      grabarTurno: function(NuevoTurno){
-
-       //GrabarTurno?CodigoProfesional={CodigoProfesional}&CodigoServicio={CodigoServicio}&CodigoDiaSemana={CodigoDiaSemana}&CodigoTurno={CodigoTurno}&CodigoPaciente={CodigoPaciente}&FechaTurno={FechaTurno}&CodigoEspecialidad={CodigoEspecialidad}&CodigoSubEspecialidad={CodigoSubEspecialidad}&CodigoCobertura={CodigoCobertura}&CodigoPlan={CodigoPlan}
-
-       //La FechaTurno es string con formato YYYYMMDD HH:MM
        var FechaTurno = new moment(NuevoTurno.FechaTurno);
        FechaTurno =  FechaTurno.format('YYYYMMDD HH:mm')
-       console.log(FechaTurno);
+
        if (this.CodigoProfesional > 0 && this.CodigoEspecialidad > 0){
          var turnos_svc = 'Turnos.svc/GrabarTurno?CodigoProfesional='+ NuevoTurno.CodigoProfesional
                                         + '&CodigoServicio=' + NuevoTurno.CodigoServicio
@@ -279,19 +272,16 @@
        return val1 + ' ' + val2;
      },
      obtenerTurnos: function(){
-       FechaDesde = new moment(this.FechaTurno).format('YYYYMMDD');
-       if (this.CodigoProfesional > 0 && this.CodigoEspecialidad > 0){
+
+       if (this.CodigoProfesional > 0 && this.FechaTurno != "" ){
+
+        this.loading = true;
+        FechaDesde = new moment(this.FechaTurno).format('YYYYMMDD');
          var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde
+
          this.$http.get(ws + '/' + turnos_svc).then(function(response){
             this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
-
-    /*
-            this.turnos.forEach(function(element) {
-              var date = new moment(parseInt(element.FechaTurno.substr(6)));
-              element.FechaTurno =  date.format('DD/MM/YYYY');
-              element.HoraTurno =  date.format('hh:mm');
-            });
-    */
+            this.loading = false;
           }, function(){
              console.log("error al recuperar turnos")
          });
@@ -313,6 +303,9 @@
         }
       },
       TurnosDisponibles: function (){
+        if(this.turnos == null) {
+          return 0;
+        }
         return this.turnos.length;
       },
 
@@ -322,57 +315,110 @@
     </script>
     <script type="text/javascript">
     $(document).ready(function() {
+
+
+
         $('#rootwizard').bootstrapWizard(
           {
+            onPrevius: function(tab, navigation, index) {
+              console.log(index);
+            },
             onNext: function(tab, navigation, index) {
-              //console.log(index);
-            if (index==2){
-              if (!$('input[name="cobertura"]').is(':checked')) {
+              //console.log(tab);
+              //console.log(navigation);
+              console.log('onNext index ' + index);
+              /*
+              1 - cobertura
+              2- opciones
+              3- especialidad
+              4- profesional
+              5- Estudios
+              6- fecha
+              7- turnos
+              */
 
-                    alert('Debe seleccionar una Cobertura');
-                      return false;
-                  }
+
+            if (index == 1 ){
+                vm.obtenerCoberturas();
+            }
+
+            // TAB OPCIONES Especialidad, Medico, Estudios
+            if (index == 2){
+
+              if (!$('input[name="cobertura"]').is(':checked')) {
+                    alert('Debe seleccionar una Cobertura'); // TODO: Cambiar a Modal
+                    return false;
+              }
+
+              // POR Especialidad
+
             }
 
             if (index==3){
+              if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
+                setTimeout(function() {
+                      $('#rootwizard').bootstrapWizard('show', 4);
+                }, 1);
+              }
+
+              if($('input[name=opciones]:radio:checked').val() == "Estudios" ) {
+                setTimeout(function() {
+                      $('#rootwizard').bootstrapWizard('show', 5);
+                }, 1);
+              }
+
               if (!$('input[name="opciones"]').is(':checked')) {
 
                     alert('Debe seleccionar una Opción de busqueda');
                       return false;
-                  }
-            }
-            if (index >=3){
+              }
 
-                vm.obtenerMedicos();
             }
 
-            if (index >=4){
+
+            if (index == 7){
+                if ($('input[name="Fecha"]').val() == "") {
+                      alert('Debe seleccionar una Fecha');
+                      return false;
+                }
                 vm.obtenerTurnos();
             }
 
+            if (index==5){
+              if($('input[name=opciones]:radio:checked').val() == "Especialidad" ) {
+                console.log("Especialidad");
+                setTimeout(function() {
+                      $('#rootwizard').bootstrapWizard('show', 6);
+                }, 1);
+              }
 
-            if($('input[name=opciones]:radio:checked').val() == "Especialidad" ) {
-              $('#rootwizard').bootstrapWizard('display', 3);
-              $('#rootwizard').bootstrapWizard('display', 4);
-              $('#rootwizard').bootstrapWizard('hide', 5);
+              if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
+                console.log("Especialidad");
+                setTimeout(function() {
+                      $('#rootwizard').bootstrapWizard('show', 6);
+                }, 1);
+              }
             }
-            if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
-              $('#rootwizard').bootstrapWizard('hide', 3);
-              $('#rootwizard').bootstrapWizard('display', 4);
-              $('#rootwizard').bootstrapWizard('hide', 5);
-            }
-            if($('input[name=opciones]:radio:checked').val() == "Estudios" ) {
-              $('#rootwizard').bootstrapWizard('hide', 3);
-              $('#rootwizard').bootstrapWizard('hide', 4);
-              $('#rootwizard').bootstrapWizard('display', 5);
-            }
+
 
         }, onTabShow: function(tab, navigation, index) {
+            console.log('onTabShow index ' + index);
+            var $total = navigation.find('li').length;
+            var $current = index+1;
+            var $percent = ($current/$total) * 100;
+            $('#rootwizard .progress-bar').css({width:$percent+'%'});
 
-          var $total = navigation.find('li').length;
-          var $current = index+1+2;
-          var $percent = ($current/$total) * 100;
-          $('#rootwizard .progress-bar').css({width:$percent+'%'});
+            if (index == 4){
+              console.log('index 4');
+                setTimeout(function() {
+                    vm.obtenerMedicos();
+                }, 1);
+            }
+
+            if (!$('input[name="Fecha"]').val() == "") {
+                vm.obtenerTurnos();
+            }
+
 
         }
         , onTabClick: function(tab, navigation, index){

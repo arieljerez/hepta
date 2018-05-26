@@ -2,7 +2,7 @@
   <div class="panel-heading">Coberturas</div>
   <div class="panel-body">
     Seleccione una Cobertura para solicitar el turno:<br />
-
+    <div v-show="loading" class="loader center-block"></div>
      <table class="table table-hover">
       <thead>
         <th>&nbsp;</th>
