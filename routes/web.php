@@ -33,3 +33,4 @@ Route::get('nuevoturno/{CodigoCobertura?}/{CodigoPlan?}/{CodigoEspecialidad?}/{C
 Route::get('mis-datos', 'PacienteController@MisDatos')->name('mis-datos');
 
 Route::get('turnos','TurnoController@all')->name('turnos');
+Route::delete('turnos','TurnoController@destroy')->name('turnos');

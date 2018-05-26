@@ -4,29 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use App\Repositories\Turno;
 
 class TurnoController extends Controller
 {
+    protected $turno;
+
+    public function __construct(Turno $turno)
+    {
+        $this->turno = $turno;
+    }
+
+    function destroy(Request $request)
+    {
+
+    }
 
     function all()
     {
-      $http = new Client([
-          // Base URI is used with relative requests
-          'base_uri' => 'http://appturnos.markey.com.ar',
-          // You can set any number of default request options.
-          'timeout'  => 2.0,
-      ]);
-
-      $url = "hepta/Pacientes.svc/ObtenerTurnosPaciente";
-
-      $response = $http->request('GET',$url, [
-        'query' => [
-              'CodigoPaciente' => 188780,
-          ],
-      ]);
-      $body = json_decode($response->getBody()->getContents());
-
-      $turnos = (object) $body->ObtenerTurnosPacienteResult->TurnosPaciente;
+      $turnos = $this->turno->ObtenerTurnosPaciente( session('CodigoPaciente') );
       return view('turnos',compact('turnos'));
     }
 

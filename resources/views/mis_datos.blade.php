@@ -1,17 +1,12 @@
 @extends('app')
 
 @section('content')
-<div class="row">
+<div class="row" id="app">
 
         <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">  <div class="panel panel-default panel-info">
       <div class="panel-heading">Datos Personales</div>
       <div class="panel-body">
         <div class="card">
-          @php
-            $dt = \App\Http\Controllers\TurnoController::ObtenerObjectoFecha( $paciente->FechaNacimiento );
-            $FechaNacimiento =  $dt->format('d/m/Y');
-          @endphp
-
           @if ($paciente->Sexo == 'F' )
             <img class="card-img-top" width="150rem" src="{{ url('images/female-silhouette_7.jpg') }}">
           @else
@@ -21,7 +16,7 @@
             <h4 class="card-title">{{ $paciente->Nombre, $paciente->Apellido }}</h4>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">Historia Clinica: </li>
-              <li class="list-group-item">Fecha Nacimiento: {{ $FechaNacimiento }}</li>
+              <li class="list-group-item">Fecha Nacimiento: <fecha-nacimiento valor="{{ $paciente->FechaNacimiento }}"></fecha-nacimiento></li>
               <li class="list-group-item">DNI: {{ $paciente->Documento }}</li>
               <li class="list-group-item">Correo Electrónico: {{ $paciente->Mail }}</li>
               <li class="list-group-item">Sexo: {{ ($paciente->Sexo == "M") ? "Masculino" : "Femenino" }}</li>
@@ -66,4 +61,27 @@
   </div>
 </div>
 
+@endsection
+
+@section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+
+  <script type="text/javascript">
+
+  Vue.component('fecha-nacimiento', {
+    props: ['valor'],
+    template: '<span>@{{ valor | fecha_format }}</span>'
+  })
+
+  Vue.filter('fecha_format', function (valor) {
+
+    var date = new moment(valor);
+    return date.format('DD/MM/YYYY');
+  })
+  var app = new Vue({
+    el: '#app',
+    data: {
+    }
+  })
+  </script>
 @endsection
