@@ -38,7 +38,7 @@
           <li class="next last" style="display:none;"><a href="#">Last</a></li>
           <li class="next"><a href="#">Siguiente</a></li>
           <li class="finish btn-lg">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Tomar Turno</button></li>
+            <button type="button" class="btn btn-primary">Tomar Turno</button></li>
         </ul>
 
     </div>
@@ -75,9 +75,8 @@
               <p>Profesional: @{{ NuevoTurno.Profesional}}</p>
               <p>Especialidad: @{{ NuevoTurno.Especialidad}}</p>
 
-              <p>Fecha: @{{ NuevoTurno.FechaTurno }}</p>
-              <p>Hora: @{{ NuevoTurno.HoraTurno  }}</p>
-
+              <p>Fecha: <fecha-turno :title="NuevoTurno.FechaTurno"></fecha-turno></p>
+              <p>Hora: <hora-turno :title=" NuevoTurno.FechaTurno"></hora-turno></p>
 
           </div>
           <div class="modal-footer">
@@ -90,6 +89,15 @@
     </div>
 <!-- /modal -->
 </template>
+
+<div id="mensaje" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+
 </div>  <!-- /row -->
 
 
@@ -187,6 +195,7 @@
     },
       created: function(){
           this.paciente = {!! $paciente !!};
+          this.FechaTurno = this.hoy();
    },
    methods:{
      obtenerCoberturas: function(){
@@ -194,7 +203,7 @@
        this.$http.get(ws +'Pacientes.svc/ObtenerCoberturasPaciente?CodigoPaciente=' + this.paciente.CodigoPaciente ).then(function(response){
             this.ajax_data = response.body;
             this.coberturas = this.ajax_data.ObtenerCoberturasPacienteResult.CoberturasPaciente;
-       this.loading = false;
+            this.loading = false;
             }, function(){
                console.log("error al recuperar coberturas")
             });
@@ -435,15 +444,20 @@
       });
       window.prettyPrint && prettyPrint();
 
-      $('#myModal').on('shown.bs.modal', function () {
-
-      });
-
       $('#rootwizard .finish').click(function() {
-          $('#rootwizard').find("a[href*='tab1']").trigger('click');
+        //  $('#rootwizard').find("a[href*='tab1']").trigger('click');
+        //
+           $('#myModal').modal(true);
+
+           $('#mensaje').modal(true);
       });
 
     });
+
+    $('#myModal').on('hidden.bs.modal', function (e) {
+
+      // mensaje
+    })
 
     $('.item_check').click(function(event) {
       var tr = $(event.target).parent();
