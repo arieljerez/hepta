@@ -4,12 +4,12 @@
     <div v-show="loading" class="loader center-block"></div>
       <div class="tableFixHead">
         <table class="table table-hover">
-             <tbody>
+             <tbody class="item_check">
                  <tr v-for="(medico, index) in medicos">
                    <td>
                        <input type="radio" name="medico" :value="medico.CodigoProfesional" v-model="CodigoProfesional" >
                    </td>
-                   <td>@{{ medico.Profesional }} <fecha-turno :title="medico.PrimerTurno"></fecha-turno> </td>
+                   <td>@{{ medico.Profesional }} <br /><fecha-turno :title="medico.PrimerTurno"></fecha-turno> </td>
 
                  </tr>
              </tbody>

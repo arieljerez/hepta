@@ -3,7 +3,7 @@
   <div class="panel-body">
        Seleccione una opción para buscar:<br />
        <table class="table table-hover">
-            <tbody>
+            <tbody class="item_check">
                 <tr v-for="(opcion, index) in opciones" class="item_check2">
                   <td>
                       <input type="radio" name="opciones" :value="opcion.valor" v-model="Opcion">

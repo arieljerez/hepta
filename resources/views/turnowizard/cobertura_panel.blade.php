@@ -9,12 +9,16 @@
         <th>Cobertura</th>
         <th>Afiliado</th>
       </thead>
-      <tbody>
-          <tr v-for="cobertura in coberturas" class="item_check3">
-            <td><input type="radio" id="cobertura" name="cobertura" v-bind:value="CodigoCoberturaPlanValue(cobertura.CodigoCobertura,cobertura.CodigoPlan)" v-model="CodigoCoberturaPlan"></td>
+      <tbody class="item_check">
+        <template v-for="cobertura in coberturas">
+          <tr>
+            <td>
+              <input type="radio" id="cobertura" name="cobertura" v-bind:value="CodigoCoberturaPlanValue(cobertura.CodigoCobertura,cobertura.CodigoPlan)" v-model="CodigoCoberturaPlan">
+            </td>
             <td>@{{ cobertura.Cobertura }}</td>
             <td>@{{ cobertura.Afiliado }}</td>
           </tr>
+        </template>
       </tbody>
      </table>
 

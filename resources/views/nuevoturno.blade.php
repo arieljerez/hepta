@@ -109,12 +109,12 @@
 
     Vue.component('fecha-turno', {
       props: ['title'],
-      template: '<div><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> @{{ title | fecha_format }}</div>'
+      template: '<span><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> @{{ title | fecha_format }}</span>'
     })
 
     Vue.component('hora-turno', {
       props: ['title'],
-      template: '<div><span class="glyphicon glyphicon-time" aria-hidden="true"></span> @{{ title | hora_format }}</div>'
+      template: '<span><span class="glyphicon glyphicon-time" aria-hidden="true"></span> @{{ title | hora_format }}</span>'
     })
 
     Vue.component('profesional-tag', {
@@ -167,7 +167,7 @@
         paciente: [],
         estudios:[],
         ajax_data: [],
-        CodigoEspecialidad: '{{ $CodigoEspecialidad }}',
+        CodigoEspecialidad: '{{ $CodigoEspecialidad == '' ? 0 : $CodigoEspecialidad}}',
         CodigoCobertura: '{{ $CodigoCobertura }}',
         CodigoPlan: '{{ $CodigoPlan }}',
         CodigoProfesional: '{{ $CodigoProfesional }}',
@@ -178,7 +178,7 @@
             {'valor':'Medico', 'descripcion': 'Busqueda por Médico' },
             {'valor':'Estudios', 'descripcion': 'Busqueda por Estudios' },
         ],
-        Opcion: '{{ $CodigoEspecialidad <> '' ? 'Medico': '' }}',
+        Opcion: '{{ $CodigoEspecialidad <> '' ? 'Especialidad': '' }}',
         turnos: [],
         CodigoTurno: 0,
         NuevoTurno: [],
@@ -187,12 +187,6 @@
     },
       created: function(){
           this.paciente = {!! $paciente !!};
-          this.CodigoEspecialidad = 0;
-          //this.FechaTurno = this.hoy();
-          //this.obtenerCoberturas();
-          //this.obtenerEspecialidades();
-          //this.obtenerMedicos();
-          this.obtenerEstudios();
    },
    methods:{
      obtenerCoberturas: function(){
@@ -280,11 +274,13 @@
          var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde
 
          this.$http.get(ws + '/' + turnos_svc).then(function(response){
-            this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
-            this.loading = false;
+         this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
+
+         this.loading = false;
           }, function(){
              console.log("error al recuperar turnos")
          });
+
        }
      },
 
@@ -316,17 +312,31 @@
     <script type="text/javascript">
     $(document).ready(function() {
 
+      $(":radio").change(function ()
+      {
+         if($('input[name=opciones]:radio:checked').val() == "Especialidad") {
+              $('#rootwizard').bootstrapWizard('enable', 3);
+              $('#rootwizard').bootstrapWizard('enable', 4);
+              $('#rootwizard').bootstrapWizard('disable', 5);
+          }
 
+          if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
+              $('#rootwizard').bootstrapWizard('disable', 3);
+              $('#rootwizard').bootstrapWizard('enable', 4);
+              $('#rootwizard').bootstrapWizard('disable', 5);
+          }
 
+          if($('input[name=opciones]:radio:checked').val() == "Estudios" ) {
+              $('#rootwizard').bootstrapWizard('disable', 3);
+              $('#rootwizard').bootstrapWizard('disable', 4);
+              $('#rootwizard').bootstrapWizard('enable', 5);
+          }
+
+     });
         $('#rootwizard').bootstrapWizard(
           {
-            onPrevius: function(tab, navigation, index) {
-              console.log(index);
-            },
             onNext: function(tab, navigation, index) {
-              //console.log(tab);
-              //console.log(navigation);
-              console.log('onNext index ' + index);
+
               /*
               1 - cobertura
               2- opciones
@@ -338,96 +348,84 @@
               */
 
 
-            if (index == 1 ){
-                vm.obtenerCoberturas();
-            }
-
             // TAB OPCIONES Especialidad, Medico, Estudios
             if (index == 2){
-
               if (!$('input[name="cobertura"]').is(':checked')) {
                     alert('Debe seleccionar una Cobertura'); // TODO: Cambiar a Modal
                     return false;
               }
-
-              // POR Especialidad
-
             }
 
-            if (index==3){
-              if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
-                setTimeout(function() {
-                      $('#rootwizard').bootstrapWizard('show', 4);
-                }, 1);
-              }
-
-              if($('input[name=opciones]:radio:checked').val() == "Estudios" ) {
-                setTimeout(function() {
-                      $('#rootwizard').bootstrapWizard('show', 5);
-                }, 1);
-              }
-
+            if (index == 3){
               if (!$('input[name="opciones"]').is(':checked')) {
-
-                    alert('Debe seleccionar una Opción de busqueda');
-                      return false;
+                  alert('Debe seleccionar una Opción de busqueda'); // TODO: Cambiar a Modal
+                  return false;
               }
-
             }
 
+            if (index == 6){
+              if($('input[name=opciones]:radio:checked').val() == "Estudios" ) {
+                if (vm.CodigosEstudios.length == 0){
+                  alert('Debe seleccionar al menos un estudio');
+                  return false;
+                }
+              }
+            }
 
             if (index == 7){
                 if ($('input[name="Fecha"]').val() == "") {
                       alert('Debe seleccionar una Fecha');
                       return false;
                 }
-                vm.obtenerTurnos();
             }
-
-            if (index==5){
-              if($('input[name=opciones]:radio:checked').val() == "Especialidad" ) {
-                console.log("Especialidad");
-                setTimeout(function() {
-                      $('#rootwizard').bootstrapWizard('show', 6);
-                }, 1);
-              }
-
-              if($('input[name=opciones]:radio:checked').val() == "Medico" ) {
-                console.log("Especialidad");
-                setTimeout(function() {
-                      $('#rootwizard').bootstrapWizard('show', 6);
-                }, 1);
-              }
-            }
-
 
         }, onTabShow: function(tab, navigation, index) {
-            console.log('onTabShow index ' + index);
             var $total = navigation.find('li').length;
             var $current = index+1;
             var $percent = ($current/$total) * 100;
             $('#rootwizard .progress-bar').css({width:$percent+'%'});
 
+            if (index == 1 ){
+                setTimeout(function() {
+                  vm.obtenerCoberturas();
+                }, 1);
+            }
+
+            if (index == 3){
+                setTimeout(function() {
+                    vm.obtenerEspecialidades();
+                }, 1);
+            }
+
             if (index == 4){
-              console.log('index 4');
                 setTimeout(function() {
                     vm.obtenerMedicos();
                 }, 1);
             }
 
-            if (!$('input[name="Fecha"]').val() == "") {
-                vm.obtenerTurnos();
+            if (index == 5){
+                setTimeout(function() {
+                    vm.obtenerEstudios();
+                }, 1);
             }
 
-
+            if(index == 7){
+                setTimeout(function() {
+                    vm.obtenerTurnos();
+                }, 1);
+            }
         }
         , onTabClick: function(tab, navigation, index){
-          return false;
+          //return false;
         }
         , onInit: function(tab, navigation, index){
 
           @isset($CodigoCobertura)
             setTimeout(function() {
+                  $('#rootwizard').bootstrapWizard('enable', 3);
+                  $('#rootwizard').bootstrapWizard('enable', 4);
+                  $('#rootwizard').bootstrapWizard('disable', 5);
+
                   $('#rootwizard').bootstrapWizard('show', 6);
             }, 1);
             vm.obtenerMedicos();
@@ -447,9 +445,9 @@
 
     });
 
-    $('.item_check2').click(function() {
-
-      $(this).children('td').children('input').prop('checked', true);
+    $('.item_check').click(function(event) {
+      var tr = $(event.target).parent();
+      $(tr).children('td').children('input').trigger('click').prop('checked', true);
     });
 
     $('.tableFixHead').on('scroll', function() {
