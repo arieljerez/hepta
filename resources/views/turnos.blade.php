@@ -4,6 +4,12 @@
 
 <div class="row" id="app">
       <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+        @if (session('resultado'))
+            <div class="alert alert-{{session('resultado')->CodigoRespuesta == 0 ? 'success' :'danger'}}">
+                {{ session('resultado')->Mensaje }}
+            </div>
+        @endif
+
         <div class="panel panel-default panel-info">
           <div class="panel-heading">Turnos</div>
           <div class="panel-body">

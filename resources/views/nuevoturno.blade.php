@@ -449,14 +449,13 @@
         //
            $('#myModal').modal(true);
 
-           $('#mensaje').modal(true);
+
       });
 
     });
 
     $('#myModal').on('hidden.bs.modal', function (e) {
-
-      // mensaje
+        $('#mensaje').modal(true);
     })
 
     $('.item_check').click(function(event) {

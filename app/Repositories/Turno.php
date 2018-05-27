@@ -14,4 +14,15 @@ Class Turno extends GuzzleHttpRequest
       return $body->ObtenerTurnosPacienteResult->TurnosPaciente;
     }
 
+
+    public function CancelarTurno($CodigoTurno,$AnoTurno)
+    {
+      $body = $this->get("Turnos.svc/CancelarTurno", [
+        'query' => [
+              'CodigoTurno' => $CodigoTurno,
+              'AnoTurno' => $AnoTurno
+          ],
+      ]);
+      return $body->CancelarTurnoResult;
+    }
 }

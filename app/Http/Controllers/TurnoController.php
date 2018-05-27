@@ -13,11 +13,15 @@ class TurnoController extends Controller
     public function __construct(Turno $turno)
     {
         $this->turno = $turno;
+
+
     }
 
     function destroy(Request $request)
     {
 
+        $resultado =  $this->turno->CancelarTurno ($request->input('CodigoTurno'), $request->input('AnoTurno'));
+        return back()->with('resultado', $resultado);
     }
 
     function all()
