@@ -51,6 +51,14 @@
 <form id="loginForm" method="post" action="{{ route('login')}}">
     <div class="row">
       <div class="col-4">
+        @if (session('status'))
+          <div class="alert alert-success">
+            {{ session('status') }}
+          </div>
+        @endif
+      </div>
+      <div class="col-4">
+
         <a href="#" class="thumbnail well-lg" style="background-color: #D8E2EB">
           <img src="{{ asset('images/logo_grande.png') }}" alt="...">
         </a>

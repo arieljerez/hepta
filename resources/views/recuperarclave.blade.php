@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form action="confirmar_email" method="post">
+<form action="{{ url('verificarpaciente') }}" method="post">
   <div class="row">
       <div class=" col-md-6 col-md-offset-3"  >
         <div class="panel panel-default panel-info">
@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-md-8 col-md-offset-2">
                 <a href="{{ route('login') }}" type="button" name="button" class="btn btn-primary">Cancelar</a>
-                <button type="submit" name="button" class="btn btn-success pull-right">Recuperar</button>
+                <button type="submit" name="button" class="btn btn-success pull-right">Verificar</button>
               </div>
             </div>
             </div>

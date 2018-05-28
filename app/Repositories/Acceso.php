@@ -22,4 +22,14 @@ Class Acceso extends GuzzleHttpRequest
         ],
     ]);
   }
+
+  public function GenerarClavePaciente($CodigoPaciente,$Mail)
+  {
+    return $this->get("Pacientes.svc/GenerarClavePaciente", [
+      'query' => [
+            'CodigoPaciente' => $CodigoPaciente,
+            'Mail' => $Mail,
+        ],
+    ]);
+  }
 }
