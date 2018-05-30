@@ -1,19 +1,28 @@
 {
   "short_name": "Hepta",
-  "name": "Hepta - Mòdulo de Gestiòn",
+  "name": "Hepta - Módulo de Gestión",
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#00887C",
+  "display": "standalone",
+  "description": "Reserve, consulte y cancele sus turnos directamente de la pantalla de su teléfono inteligente",
   "icons": [
     {
-      "src": "images/touch/markey_96x96.png",
+      "src": "images/touch/homescreen96.png",
       "type": "image/png",
       "sizes": "96x96"
     },
     {
-      "src": "images/touch/markey_144x144.png",
+      "src": "images/touch/homescreen144.png",
       "type": "image/png",
       "sizes": "144x144"
+    }, {
+      "src": "images/touch/homescreen192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }, {
+      "src": "images/touch/homescreen256.png",
+      "sizes": "256x256",
+      "type": "image/png"
     }
-  ],
-  "start_url": "/?utm_source=homescreen",
-  "background_color": "#00887C",
-  "display": "standalone"
+  ]
 }

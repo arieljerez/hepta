@@ -10,7 +10,6 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
     <title>Hepta - Centro Medico -  Portal de turnos</title>
     <link rel="manifest" href="/manifest.json">
     <!-- Latest compiled and minified CSS -->
