@@ -1,0 +1,19 @@
+{
+  "short_name": "Hepta",
+  "name": "Hepta - Mòdulo de Gestiòn",
+  "icons": [
+    {
+      "src": "images/touch/markey_96x96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "images/touch/markey_144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ],
+  "start_url": "/?utm_source=homescreen",
+  "background_color": "#00887C",
+  "display": "standalone"
+}
