@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
+    <meta name="description" content="{{ env('APP_TITLE','') }}">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Hepta - Centro Medico -  Portal de turnos</title>
+    <title>{{ env('APP_TITLE','') }}</title>
     <link rel="manifest" href="/manifest.json">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -58,7 +58,6 @@
         @endif
       </div>
       <div class="col-4">
-
         <a href="#" class="thumbnail well-lg" style="background-color: #D8E2EB">
           <img src="{{ asset('images/logo_grande.png') }}" alt="...">
         </a>
@@ -67,13 +66,13 @@
     <div class="row">
       <div class="col-4">
           <h2 class="form-signin-heading">Módulo de autogestión</h2>
-<div class="form-group">
-  <label for="documento">Número de documento</label>
-  <input type="number" id="documento" name="documento" v-model="documento" class="form-control" placeholder="9999999" required autofocus>
-  <label for="clave">Contraseña</label>
-  <input type="password" id="clave" name="clave" v-model="clave" class="form-control" placeholder="*******" required>
+          <div class="form-group">
+            <label for="documento">Número de documento</label>
+            <input type="number" id="documento" name="documento" v-model="documento" class="form-control" placeholder="9999999" required autofocus>
+            <label for="clave">Contraseña</label>
+            <input type="password" id="clave" name="clave" v-model="clave" class="form-control" placeholder="*******" required>
 
-</div>
+          </div>
           <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span></button>
           {{ csrf_field() }}
 
