@@ -43,7 +43,11 @@
 
     </div>
     <!-- /rootwizard -->
-    <pre class="code">
+      <a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          +
+      </a>
+      <div class="collapse" id="collapseExample">
+              <pre class="code">
         CodigoEspecialidad  @{{ CodigoEspecialidad }}
         CodigoCobertura  @{{ CodigoCobertura }}
         CodigoPlan  @{{ CodigoPlan }}
@@ -54,6 +58,8 @@
         FechaTurno  @{{ FechaTurno }}
         loading @{{ loading }}
     </pre>
+      </div>
+
 
 
 </div>
@@ -276,11 +282,22 @@
      },
      obtenerTurnos: function(){
 
-       if (this.CodigoProfesional > 0 && this.FechaTurno != "" ){
+       if ((this.CodigoProfesional > 0 || this.CodigosEstudios.length > 0)  && this.FechaTurno != "" ){
 
         this.loading = true;
         FechaDesde = new moment(this.FechaTurno).format('YYYYMMDD');
-         var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde
+
+        var Estudios = '';
+        var n=1;
+        for( var key in this.CodigosEstudios)
+        {
+            Estudios = Estudios + '&practica' + n + '='+ this.CodigosEstudios[key];
+            n++;
+        }
+
+           console.log( "obtenerTurnos");
+
+         var turnos_svc = 'Turnos.svc/ObtenerTurnosDisponibles?CodigoProfesional='+ this.CodigoProfesional +'&CodigoEspecialidad=' + this.CodigoEspecialidad + '&FechaDesde=' + FechaDesde + Estudios
 
          this.$http.get(ws + '/' + turnos_svc).then(function(response){
          this.turnos = response.body.ObtenerTurnosDisponiblesResult.TurnosDisponibles;
@@ -359,6 +376,9 @@
 
             // TAB OPCIONES Especialidad, Medico, Estudios
             if (index == 2){
+                vm.CodigoEspecialidad = 0;
+                vm.CodigoProfesional = 0;
+                vm.CodigosEstudios = [];
               if (!$('input[name="cobertura"]').is(':checked')) {
                     alert('Debe seleccionar una Cobertura'); // TODO: Cambiar a Modal
                     return false;
